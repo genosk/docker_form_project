@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do-Item</title>
+</head>
+<body>
+
+    <p>Hello Everyone! Welcome to the To-Do Item Page.</p>
+
+    <form id="todoForm">
+        <label for="itemname">Item Name: </label>
+        <input type="text" id="itemname" name="itemname" placeholder="Enter the Item Name "><br><br>
+        <label for="itemdescription">Item Desc: </label>
+        <input type="text" id="itemdescription" name="itemdescription" placeholder="Enter the description "><br><br>
+        <label for="ItemId">Item ID: </label>
+        <input type="text" id="ItemId" name="ItemId" placeholder="Enter the Item ID " required><br><br>
+        <label for="Itemuuid">Item UUID: </label>
+        <input type="text" id="Itemuuid" name="Itemuuid" placeholder="Enter the Item UUID " required><br><br>
+        <label for="Itemhash">Item Hash: </label>
+        <input type="text" id="Itemhash" name="Itemhash" placeholder="Enter the Item Hash " required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('todoForm').addEventListener('submit', function(e) {
+            e.preventDefault();  // Prevent the form from submitting the usual way
+
+            const itemname = document.getElementById('itemname').value;
+            const itemdescription = document.getElementById('itemdescription').value;
+            const ItemId = document.getElementById('ItemId').value;
+            const Itemuuid = document.getElementById('Itemuuid').value;
+            const Itemhash = document.getElementById('Itemhash').value;
+
+            // Send the data via fetch
+            fetch('http://127.0.0.1:8000/submittodoitem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    itemname: itemname,
+                    itemdescription: itemdescription,
+                    ItemId: ItemId,
+                    Itemuuid: Itemuuid,
+                    Itemhash: Itemhash
+
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);  // Success message from backend
+                } else {
+                    alert('Failed to add item');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+            document.getElementById('todoForm').reset();
+        });
+    </script>
+</body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: cream;
+    }
+    form {
+        width: 300px;
+        padding: 20px;
+        border: 1px solid lightyellow;
+        justify-content: center;
+        margin-top: 50px;
+        align-items: center;
+        margin: 0 auto;
+        border-radius: 10px;
+    }
+    p {
+        text-align: center;
+        font-size: 30px;
+        font-family: 'Arial Black', sans-serif;
+        color: #0207ffff;
+    }
+</style>
+</html>
